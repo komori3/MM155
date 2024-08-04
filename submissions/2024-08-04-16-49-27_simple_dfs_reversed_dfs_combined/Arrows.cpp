@@ -280,6 +280,115 @@ namespace SimpleDFS {
 
 }
 
+namespace OrderedDFS {
+
+    // mult=1,2,3,5 ÇÃèáÇ≈å©ÇÈ
+
+    struct State {
+
+        Timer& timer;
+
+        int N;
+        int arrows[32][32];
+        int mults[32][32];
+
+        bool used[32][32];
+        int ys[900], xs[900];
+        int id = 0;
+        int score = 0;
+
+        int best_ys[900], best_xs[900];
+        int best_id = 0;
+        int best_score = 0;
+
+        size_t dfs_call = 0;
+
+
+        State(const Input& input, Timer& timer_) : timer(timer_) {
+            N = input.N;
+            for (int y = 0; y < 32; y++) {
+                for (int x = 0; x < 32; x++) {
+                    arrows[y][x] = mults[y][x] = -1;
+                    used[y][x] = false;
+                }
+            }
+            for (int y = 0; y < N; y++) {
+                for (int x = 0; x < N; x++) {
+                    arrows[y + 1][x + 1] = input.arrows[y][x];
+                    mults[y + 1][x + 1] = input.mults[y][x];
+                }
+            }
+        }
+
+        void dfs(int y, int x) {
+            dfs_call++;
+            if (timer.elapsed_ms() > 9500) return;
+            ys[id] = y;
+            xs[id] = x;
+            id++;
+            used[y][x] = true;
+            score += id * mults[y][x];
+            if (chmax(best_score, score)) {
+                dump(id, y, x, best_score);
+                std::memcpy(best_ys, ys, sizeof(int) * id);
+                std::memcpy(best_xs, xs, sizeof(int) * id);
+                best_id = id;
+            }
+            const auto dir = arrows[y][x];
+
+            for (int i = 1;; i++) {
+                int ny = y + dy[dir] * i, nx = x + dx[dir] * i;
+                if (arrows[ny][nx] == -1) break;
+                if (used[ny][nx] || mults[ny][nx] != 1) continue;
+                dfs(ny, nx);
+            }
+            for (int i = 1;; i++) {
+                int ny = y + dy[dir] * i, nx = x + dx[dir] * i;
+                if (arrows[ny][nx] == -1) break;
+                if (used[ny][nx] || mults[ny][nx] != 2) continue;
+                dfs(ny, nx);
+            }
+            for (int i = 1;; i++) {
+                int ny = y + dy[dir] * i, nx = x + dx[dir] * i;
+                if (arrows[ny][nx] == -1) break;
+                if (used[ny][nx] || mults[ny][nx] != 3) continue;
+                dfs(ny, nx);
+            }
+            for (int i = 1;; i++) {
+                int ny = y + dy[dir] * i, nx = x + dx[dir] * i;
+                if (arrows[ny][nx] == -1) break;
+                if (used[ny][nx] || mults[ny][nx] != 5) continue;
+                dfs(ny, nx);
+            }
+
+            score -= id * mults[y][x];
+            used[y][x] = false;
+            id--;
+        }
+
+    };
+
+    std::vector<std::string> solve(const Input& input) {
+
+        Timer timer;
+
+        std::vector<std::string> moves;
+
+        State state(input, timer);
+        state.dfs(input.N / 2 + 1, input.N / 2 + 1);
+        //state.dfs(1, 1);
+
+        dump(timer.elapsed_ms(), state.dfs_call);
+
+        for (int i = 0; i < state.best_id; i++) {
+            moves.push_back(std::to_string(state.best_ys[i] - 1) + " " + std::to_string(state.best_xs[i] - 1));
+        }
+
+        return moves;
+    }
+
+}
+
 namespace ReversedDFS {
 
     struct State {
@@ -291,7 +400,7 @@ namespace ReversedDFS {
         int arrows[32][32];
         int mults[32][32];
 
-        // (y, x) „Å´Âêë„Åã„Å£„Å¶‰º∏„Å≥„Å¶„ÅÑ„ÇãÁü¢Âç∞„ÅåÂ≠òÂú®„Åô„Çã„Çª„É´„ÅÆ„É™„Çπ„Éà
+        // (y, x) Ç…å¸Ç©Ç¡ÇƒêLÇ—ÇƒÇ¢ÇÈñÓàÛÇ™ë∂ç›Ç∑ÇÈÉZÉãÇÃÉäÉXÉg
         std::vector<std::vector<std::vector<std::pair<int, int>>>> cands;
 
         bool used[32][32];
@@ -336,7 +445,7 @@ namespace ReversedDFS {
                     std::sort(cands[y][x].begin(), cands[y][x].end(), [&](const std::pair<int, int>& a, const std::pair<int, int>& b) {
                         int ma = mults[a.first][a.second], mb = mults[b.first][b.second];
                         int da = abs(y - a.first) + abs(x - a.second), db = abs(y - b.first) + abs(x - b.second);
-                        return ma == mb ? da < db : ma > mb; // mult „Åß„Åã„ÅÑÈ†Ü
+                        return ma == mb ? da < db : ma > mb; // mult Ç≈Ç©Ç¢èá
                     });
                 }
             }
@@ -394,7 +503,7 @@ namespace ReversedDFS {
         std::sort(cands.begin(), cands.end());
         
         {
-            auto [mult, dist, sy, sx] = cands[0];
+            auto [mult, dist, sy, sx] = cands.front();
             dump(cands.size(), state.cands[sy][sx].size());
             state.dfs(sy, sx);
         }
@@ -411,7 +520,6 @@ namespace ReversedDFS {
 }
 
 
-
 int main(int argc, char** argv) {
 
     Timer timer;
@@ -421,7 +529,7 @@ int main(int argc, char** argv) {
 #endif
 
     const bool LOCAL_MODE = argc > 1 && std::string(argv[1]) == "local";
-    const int seed = 2;
+    const int seed = 1;
 
     const auto input = [&]() {
         if (LOCAL_MODE) {
@@ -430,14 +538,7 @@ int main(int argc, char** argv) {
         return Input::load(std::cin);
     }();
 
-    int best_score;
-    std::vector<std::string> best_moves;
-    {
-        auto [score, moves] = SimpleDFS::solve(input, 4500);
-        if (chmax(best_score, score)) {
-            best_moves = moves;
-        }
-    }
+    auto [best_score, best_moves] = SimpleDFS::solve(input, 4500);
     {
         auto [score, moves] = ReversedDFS::solve(input, 4500);
         if (chmax(best_score, score)) {
