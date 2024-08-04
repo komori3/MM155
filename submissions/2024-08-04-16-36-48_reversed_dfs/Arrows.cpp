@@ -261,7 +261,7 @@ namespace SimpleDFS {
 
     };
 
-    std::pair<int, std::vector<std::string>> solve(const Input& input) {
+    std::vector<std::string> solve(const Input& input) {
 
         Timer timer;
 
@@ -274,7 +274,7 @@ namespace SimpleDFS {
             moves.push_back(std::to_string(state.best_ys[i] - 1) + " " + std::to_string(state.best_xs[i] - 1));
         }
 
-        return { state.best_score, moves };
+        return moves;
     }
 
 }
@@ -480,7 +480,7 @@ namespace ReversedDFS {
 
     };
 
-    std::pair<int, std::vector<std::string>> solve(const Input& input) {
+    std::vector<std::string> solve(const Input& input) {
 
         Timer timer;
 
@@ -512,7 +512,7 @@ namespace ReversedDFS {
             moves.push_back(std::to_string(state.best_ys[i] - 1) + " " + std::to_string(state.best_xs[i] - 1));
         }
 
-        return { state.best_score, moves };
+        return moves;
     }
 
 }
@@ -534,7 +534,7 @@ int main(int argc, char** argv) {
         return Input::load(std::cin);
     }();
 
-    auto [score, moves] = ReversedDFS::solve(input);
+    auto moves = ReversedDFS::solve(input);
 
     if (LOCAL_MODE) {
         std::ofstream out(format("../../tester/out/%d.out", seed));

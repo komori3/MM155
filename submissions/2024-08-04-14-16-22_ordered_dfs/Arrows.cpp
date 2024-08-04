@@ -51,9 +51,9 @@ iosetup(true); // set false when solving interective problems
 /** string formatter **/
 template<typename... Ts> std::string format(const std::string& f, Ts... t) { size_t l = std::snprintf(nullptr, 0, f.c_str(), t...); std::vector<char> b(l + 1); std::snprintf(&b[0], l + 1, f.c_str(), t...); return std::string(&b[0], &b[0] + l); }
 /** dump **/
-//#ifdef _MSC_VER
+#ifdef _MSC_VER
 #define ENABLE_DUMP
-//#endif
+#endif
 #ifdef ENABLE_DUMP
 #define DUMPOUT std::cerr
 std::ostringstream DUMPBUF;
@@ -261,7 +261,7 @@ namespace SimpleDFS {
 
     };
 
-    std::pair<int, std::vector<std::string>> solve(const Input& input) {
+    std::vector<std::string> solve(const Input& input) {
 
         Timer timer;
 
@@ -274,7 +274,7 @@ namespace SimpleDFS {
             moves.push_back(std::to_string(state.best_ys[i] - 1) + " " + std::to_string(state.best_xs[i] - 1));
         }
 
-        return { state.best_score, moves };
+        return moves;
     }
 
 }
@@ -388,135 +388,6 @@ namespace OrderedDFS {
 
 }
 
-namespace ReversedDFS {
-
-    struct State {
-
-        Timer& timer;
-
-        int N;
-        int arrows[32][32];
-        int mults[32][32];
-
-        // (y, x) Ç…å¸Ç©Ç¡ÇƒêLÇ—ÇƒÇ¢ÇÈñÓàÛÇ™ë∂ç›Ç∑ÇÈÉZÉãÇÃÉäÉXÉg
-        std::vector<std::vector<std::vector<std::pair<int, int>>>> cands;
-
-        bool used[32][32];
-        int ys[900], xs[900];
-        int id = 0;
-        int score = 0;
-        int mult_sum = 0;
-
-        int best_ys[900], best_xs[900];
-        int best_id = 0;
-        int best_score = 0;
-
-        size_t dfs_call = 0;
-
-
-        State(const Input& input, Timer& timer_) : timer(timer_) {
-            N = input.N;
-            for (int y = 0; y < 32; y++) {
-                for (int x = 0; x < 32; x++) {
-                    arrows[y][x] = mults[y][x] = -1;
-                    used[y][x] = false;
-                }
-            }
-            for (int y = 0; y < N; y++) {
-                for (int x = 0; x < N; x++) {
-                    arrows[y + 1][x + 1] = input.arrows[y][x];
-                    mults[y + 1][x + 1] = input.mults[y][x];
-                }
-            }
-            cands = make_vector(std::vector<std::pair<int, int>>(), N + 1, N + 1);
-            for (int y = 1; y <= N; y++) {
-                for (int x = 1; x <= N; x++) {
-                    for (int d = 0; d < 8; d++) {
-                        for (int k = 0;; k++) {
-                            int ny = y - dy[d] * k, nx = x - dx[d] * k;
-                            if (arrows[ny][nx] == -1) break;
-                            if (arrows[ny][nx] == d) {
-                                cands[y][x].emplace_back(ny, nx);
-                            }
-                        }
-                    }
-                    std::sort(cands[y][x].begin(), cands[y][x].end(), [&](const std::pair<int, int>& a, const std::pair<int, int>& b) {
-                        int ma = mults[a.first][a.second], mb = mults[b.first][b.second];
-                        int da = abs(y - a.first) + abs(x - a.second), db = abs(y - b.first) + abs(x - b.second);
-                        return ma == mb ? da < db : ma > mb; // mult Ç≈Ç©Ç¢èá
-                    });
-                }
-            }
-        }
-
-        void dfs(int y, int x) {
-            dfs_call++;
-            if (timer.elapsed_ms() > 9500) return;
-
-            ys[id] = y;
-            xs[id] = x;
-            id++;
-            used[y][x] = true;
-            mult_sum += mults[y][x];
-            score += mult_sum;
-
-            if (chmax(best_score, score)) {
-                dump(id, y, x, best_score);
-                std::memcpy(best_ys, ys, sizeof(int) * id);
-                std::memcpy(best_xs, xs, sizeof(int) * id);
-                best_id = id;
-            }
-
-            for (const auto& [ny, nx] : cands[y][x]) {
-                if (used[ny][nx]) continue;
-                dfs(ny, nx);
-            }
-
-            score -= mult_sum;
-            mult_sum -= mults[y][x];
-            used[y][x] = false;
-            id--;
-        }
-
-    };
-
-    std::pair<int, std::vector<std::string>> solve(const Input& input) {
-
-        Timer timer;
-
-        std::vector<std::string> moves;
-
-        State state(input, timer);
-        
-        const int N = input.N;
-        const int cy = input.N / 2 + 1, cx = cy;
-        std::vector<std::tuple<int, int, int, int>> cands;
-        for (int y = 1; y <= N; y++) {
-            for (int x = 1; x <= N; x++) {
-                int mult = state.mults[y][x];
-                int dist = abs(cy - y) + abs(cx - x);
-                cands.emplace_back(-mult, dist, y, x);
-            }
-        }
-        std::sort(cands.begin(), cands.end());
-        
-        {
-            auto [mult, dist, sy, sx] = cands.front();
-            dump(cands.size(), state.cands[sy][sx].size());
-            state.dfs(sy, sx);
-        }
-
-        dump(timer.elapsed_ms(), state.dfs_call);
-
-        for (int i = state.best_id - 1; i >= 0; i--) {
-            moves.push_back(std::to_string(state.best_ys[i] - 1) + " " + std::to_string(state.best_xs[i] - 1));
-        }
-
-        return { state.best_score, moves };
-    }
-
-}
-
 
 int main(int argc, char** argv) {
 
@@ -525,7 +396,7 @@ int main(int argc, char** argv) {
 #endif
 
     const bool LOCAL_MODE = argc > 1 && std::string(argv[1]) == "local";
-    const int seed = 5;
+    const int seed = 7;
 
     const auto input = [&]() {
         if (LOCAL_MODE) {
@@ -534,7 +405,7 @@ int main(int argc, char** argv) {
         return Input::load(std::cin);
     }();
 
-    auto [score, moves] = ReversedDFS::solve(input);
+    auto moves = OrderedDFS::solve(input);
 
     if (LOCAL_MODE) {
         std::ofstream out(format("../../tester/out/%d.out", seed));
