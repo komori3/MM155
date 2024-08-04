@@ -1,0 +1,7 @@
+.vs
+sample
+submissions/*/err
+submissions/*/out
+tester
+vs/*/bin
+vs/*/obj
