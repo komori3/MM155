@@ -1,0 +1,110 @@
+Seed = 1, Score = 3068.0, PreviousBest = 2732.0, RunTime = 7376 ms
+Seed = 3, Score = 471357.0, PreviousBest = 469832.0, RunTime = 7384 ms
+Seed = 2, Score = 540901.0, PreviousBest = 540210.0, RunTime = 7385 ms
+Seed = 4, Score = 645640.0, PreviousBest = 655648.0, RunTime = 7384 ms
+Seed = 5, Score = 437635.0, PreviousBest = 433458.0, RunTime = 7383 ms
+Seed = 7, Score = 195793.0, PreviousBest = 200517.0, RunTime = 7385 ms
+Seed = 6, Score = 73535.0, PreviousBest = 73304.0, RunTime = 7383 ms
+Seed = 8, Score = 142264.0, PreviousBest = 138976.0, RunTime = 7381 ms
+Seed = 9, Score = 273775.0, PreviousBest = 271515.0, RunTime = 7398 ms
+Seed = 10, Score = 129493.0, PreviousBest = 126871.0, RunTime = 7399 ms
+Seed = 11, Score = 66558.0, PreviousBest = 63454.0, RunTime = 7396 ms
+Seed = 13, Score = 268258.0, PreviousBest = 259254.0, RunTime = 7409 ms
+Seed = 14, Score = 25742.0, PreviousBest = 25082.0, RunTime = 7399 ms
+Seed = 12, Score = 18455.0, PreviousBest = 18517.0, RunTime = 7397 ms
+Seed = 16, Score = 182260.0, PreviousBest = 179744.0, RunTime = 7396 ms
+Seed = 15, Score = 189758.0, PreviousBest = 189497.0, RunTime = 7397 ms
+Seed = 17, Score = 454685.0, PreviousBest = 452984.0, RunTime = 7400 ms
+Seed = 18, Score = 362178.0, PreviousBest = 363733.0, RunTime = 7388 ms
+Seed = 19, Score = 409229.0, PreviousBest = 409998.0, RunTime = 7397 ms
+Seed = 20, Score = 158133.0, PreviousBest = 153700.0, RunTime = 7396 ms
+Seed = 21, Score = 10347.0, PreviousBest = 10188.0, RunTime = 7398 ms
+Seed = 22, Score = 3902.0, PreviousBest = 3668.0, RunTime = 7399 ms
+Seed = 23, Score = 7870.0, PreviousBest = 7312.0, RunTime = 7398 ms
+Seed = 24, Score = 5707.0, PreviousBest = 5799.0, RunTime = 7395 ms
+Seed = 25, Score = 370100.0, PreviousBest = 372960.0, RunTime = 7398 ms
+Seed = 26, Score = 124491.0, PreviousBest = 119765.0, RunTime = 7396 ms
+Seed = 27, Score = 420201.0, PreviousBest = 419921.0, RunTime = 7396 ms
+Seed = 28, Score = 3069.0, PreviousBest = 3079.0, RunTime = 7397 ms
+Seed = 30, Score = 627153.0, PreviousBest = 638990.0, RunTime = 7398 ms
+Seed = 31, Score = 60549.0, PreviousBest = 58319.0, RunTime = 7396 ms
+Seed = 29, Score = 606598.0, PreviousBest = 604582.0, RunTime = 7398 ms
+Seed = 32, Score = 330507.0, PreviousBest = 331464.0, RunTime = 7396 ms
+Seed = 33, Score = 12104.0, PreviousBest = 10731.0, RunTime = 7401 ms
+Seed = 34, Score = 82381.0, PreviousBest = 79800.0, RunTime = 7396 ms
+Seed = 35, Score = 550591.0, PreviousBest = 557955.0, RunTime = 7400 ms
+Seed = 36, Score = 103424.0, PreviousBest = 97974.0, RunTime = 7402 ms
+Seed = 37, Score = 103849.0, PreviousBest = 106123.0, RunTime = 7400 ms
+Seed = 38, Score = 2440.0, PreviousBest = 2308.0, RunTime = 7399 ms
+Seed = 39, Score = 40728.0, PreviousBest = 40299.0, RunTime = 7398 ms
+Seed = 40, Score = 17836.0, PreviousBest = 18407.0, RunTime = 7396 ms
+Seed = 41, Score = 554841.0, PreviousBest = 563812.0, RunTime = 7400 ms
+Seed = 42, Score = 8078.0, PreviousBest = 8305.0, RunTime = 7399 ms
+Seed = 43, Score = 40180.0, PreviousBest = 39668.0, RunTime = 7395 ms
+Seed = 44, Score = 308242.0, PreviousBest = 305591.0, RunTime = 7399 ms
+Seed = 45, Score = 549451.0, PreviousBest = 545036.0, RunTime = 7401 ms
+Seed = 46, Score = 142676.0, PreviousBest = 139672.0, RunTime = 7399 ms
+Seed = 47, Score = 103455.0, PreviousBest = 99788.0, RunTime = 7397 ms
+Seed = 48, Score = 56045.0, PreviousBest = 57458.0, RunTime = 7397 ms
+Seed = 49, Score = 89049.0, PreviousBest = 84417.0, RunTime = 7407 ms
+Seed = 50, Score = 7569.0, PreviousBest = 7510.0, RunTime = 7398 ms
+Seed = 51, Score = 11679.0, PreviousBest = 12384.0, RunTime = 7397 ms
+Seed = 52, Score = 99767.0, PreviousBest = 95571.0, RunTime = 7396 ms
+Seed = 53, Score = 63289.0, PreviousBest = 64005.0, RunTime = 7398 ms
+Seed = 54, Score = 204208.0, PreviousBest = 198981.0, RunTime = 7398 ms
+Seed = 55, Score = 613402.0, PreviousBest = 623407.0, RunTime = 7396 ms
+Seed = 56, Score = 145555.0, PreviousBest = 142945.0, RunTime = 7395 ms
+Seed = 57, Score = 3002.0, PreviousBest = 2735.0, RunTime = 7399 ms
+Seed = 58, Score = 168559.0, PreviousBest = 163943.0, RunTime = 7398 ms
+Seed = 59, Score = 351802.0, PreviousBest = 348920.0, RunTime = 7396 ms
+Seed = 60, Score = 8696.0, PreviousBest = 8644.0, RunTime = 7398 ms
+Seed = 61, Score = 272339.0, PreviousBest = 268547.0, RunTime = 7397 ms
+Seed = 62, Score = 19852.0, PreviousBest = 19107.0, RunTime = 7403 ms
+Seed = 63, Score = 28077.0, PreviousBest = 26970.0, RunTime = 7396 ms
+Seed = 64, Score = 4580.0, PreviousBest = 4579.0, RunTime = 7395 ms
+Seed = 65, Score = 152341.0, PreviousBest = 149126.0, RunTime = 7398 ms
+Seed = 66, Score = 134391.0, PreviousBest = 128975.0, RunTime = 7397 ms
+Seed = 67, Score = 149111.0, PreviousBest = 144300.0, RunTime = 7396 ms
+Seed = 68, Score = 478603.0, PreviousBest = 480004.0, RunTime = 7398 ms
+Seed = 69, Score = 56957.0, PreviousBest = 58431.0, RunTime = 7396 ms
+Seed = 70, Score = 215880.0, PreviousBest = 214395.0, RunTime = 7398 ms
+Seed = 71, Score = 94989.0, PreviousBest = 92112.0, RunTime = 7396 ms
+Seed = 72, Score = 193629.0, PreviousBest = 187240.0, RunTime = 7397 ms
+Seed = 73, Score = 207008.0, PreviousBest = 204274.0, RunTime = 7400 ms
+Seed = 74, Score = 30519.0, PreviousBest = 30407.0, RunTime = 7399 ms
+Seed = 75, Score = 9005.0, PreviousBest = 8661.0, RunTime = 7395 ms
+Seed = 77, Score = 80493.0, PreviousBest = 82368.0, RunTime = 7396 ms
+Seed = 76, Score = 4790.0, PreviousBest = 4206.0, RunTime = 7398 ms
+Seed = 78, Score = 6664.0, PreviousBest = 6575.0, RunTime = 7398 ms
+Seed = 79, Score = 14851.0, PreviousBest = 14112.0, RunTime = 7399 ms
+Seed = 80, Score = 181305.0, PreviousBest = 174909.0, RunTime = 7395 ms
+Seed = 81, Score = 12387.0, PreviousBest = 12241.0, RunTime = 7398 ms
+Seed = 82, Score = 115771.0, PreviousBest = 113640.0, RunTime = 7398 ms
+Seed = 83, Score = 146667.0, PreviousBest = 142485.0, RunTime = 7400 ms
+Seed = 85, Score = 246577.0, PreviousBest = 234500.0, RunTime = 7398 ms
+Seed = 84, Score = 160026.0, PreviousBest = 154805.0, RunTime = 7398 ms
+Seed = 87, Score = 5941.0, PreviousBest = 5642.0, RunTime = 7398 ms
+Seed = 86, Score = 74825.0, PreviousBest = 74270.0, RunTime = 7402 ms
+Seed = 88, Score = 5080.0, PreviousBest = 5116.0, RunTime = 7395 ms
+Seed = 89, Score = 2333.0, PreviousBest = 2310.0, RunTime = 7396 ms
+Seed = 90, Score = 488827.0, PreviousBest = 491377.0, RunTime = 7407 ms
+Seed = 91, Score = 30061.0, PreviousBest = 30261.0, RunTime = 7402 ms
+Seed = 92, Score = 16316.0, PreviousBest = 16020.0, RunTime = 7401 ms
+Seed = 93, Score = 70791.0, PreviousBest = 72332.0, RunTime = 7400 ms
+Seed = 94, Score = 25141.0, PreviousBest = 23930.0, RunTime = 7400 ms
+Seed = 95, Score = 4427.0, PreviousBest = 3953.0, RunTime = 7399 ms
+Seed = 96, Score = 3261.0, PreviousBest = 3067.0, RunTime = 7396 ms
+Seed = 97, Score = 153883.0, PreviousBest = 153308.0, RunTime = 7394 ms
+Seed = 98, Score = 394519.0, PreviousBest = 394175.0, RunTime = 7394 ms
+Seed = 99, Score = 278289.0, PreviousBest = 274797.0, RunTime = 7397 ms
+Seed = 100, Score = 368186.0, PreviousBest = 368209.0, RunTime = 7397 ms
+
+            Seeds: 1 to 100
+   Executed Cases: 100
+     Failed Cases: 0
+    Avg. Run Time: 7396 ms
+    Max. Run Time: 7409 ms
+
+   Improved Bests: 73
+Prev. Bests Score: 97.83173
+    Current Score: 99.59473

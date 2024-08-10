@@ -615,8 +615,8 @@ namespace PathMutation {
         }
 
         bool sequential_search(const int max_length, Timer& timer) {
-            for (int begin = 0; begin <= (int)move_seq.size(); begin++) {
-                for (int end = begin; end <= (int)move_seq.size(); end++) {
+            for (int begin = 2; begin < (int)move_seq.size(); begin++) {
+                for (int end = begin; end < (int)move_seq.size(); end++) {
                     if (timer.elapsed_ms() > 9500) return false;
                     if (end - begin > max_length) continue;
                     auto dinfo = check_mutate(begin, end);
@@ -667,11 +667,11 @@ namespace PathMutation {
 
         State state(input, moves);
 
-        //while (state.sequential_search(5, timer)) {}
+        //while (state.sequential_search(10, timer)) {}
         //while (state.reversed_sequential_search(10, timer));
         int iter = 0;
         state.start_time = timer.elapsed_ms();
-        state.end_time = 9500;
+        state.end_time = 99500;
         state.start_temp = input.N * input.N * 0.5;
         dump(state.start_temp);
         state.end_temp = 0;
@@ -689,66 +689,6 @@ namespace PathMutation {
 
         return { state.best_score, moves };
     }
-
-}
-
-namespace PathMutation2 {
-
-    using ::operator<<;
-
-    struct Cell {
-
-        int id = 0;
-        int py = -1;
-        int px = -1;
-        int ny = -1;
-        int nx = -1;
-        
-        std::string stringify() const {
-            return format("Cell [id=%d, prv=(%d, %d), nxt=(%d, %d)]", id, py, px, ny, nx);
-        }
-
-        void set(int id_ = 0, int py_ = -1, int px_ = -1, int ny_ = -1, int nx_ = -1) {
-            id = id_; py = py_; px = px_; ny = ny_; nx = nx_;
-        }
-    };
-
-    struct State {
-
-        const Input input;
-
-        std::vector<std::pair<int, int>> move_seq;
-        int score = 0;
-
-        std::array<std::array<Cell, NMAX>, NMAX> board{};
-
-        State(const Input& input_, const std::vector<std::pair<int, int>>& move_seq_)
-            : input(input_), move_seq(move_seq_)
-        {
-            move_seq.insert(move_seq.begin(), std::make_pair(-1, -1));
-            for (int id = 1; id < (int)move_seq.size(); id++) {
-                auto [y, x] = move_seq[id];
-                int py = -1, px = -1, ny = -1, nx = -1;
-                if (id != 1) {
-                    std::tie(py, px) = move_seq[id - 1];
-                }
-                if (id != (int)move_seq.size() - 1) {
-                    std::tie(ny, nx) = move_seq[id + 1];
-                }
-                board[y][x].set(id, py, px, ny, nx);
-            }
-            {
-                auto [y, x] = move_seq[1];
-                while (true) {
-                    const auto& c = board[y][x];
-                    score += c.id * input.mults[y][x];
-                    y = c.ny; x = c.nx;
-                    if (y == -1) break;
-                }
-                dump(score);
-            }
-        }
-    };
 
 }
 
@@ -779,14 +719,11 @@ int main(int argc, char** argv) {
             best_moves = moves;
         }
     }
-    if (false) {
+    {
         auto [score, moves] = PathMutation::solve(input, best_moves, timer);
         if (chmax(best_score, score)) {
             best_moves = moves;
         }
-    }
-    {
-        PathMutation2::State(input, best_moves);
     }
 
     if (LOCAL_MODE) {
