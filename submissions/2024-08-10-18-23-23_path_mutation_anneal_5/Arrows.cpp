@@ -366,8 +366,6 @@ namespace PathMutation {
         double start_temp, end_temp;
         bool force = false;
 
-        DFSInfo dinfo;
-
         State(const Input& input_, const std::vector<std::pair<int, int>>& move_seq_)
             : input(input_), move_seq(move_seq_)
         {
@@ -383,7 +381,7 @@ namespace PathMutation {
             }
         }
 
-        void dfs_head(int y, int x) {
+        void dfs_head(DFSInfo& dinfo, int y, int x) {
             assert(!used[y][x]);
 
             used[y][x] = true;
@@ -420,7 +418,7 @@ namespace PathMutation {
             if (!dinfo.found) {
                 for (const auto& [ny, nx] : input.adj_backward[y][x]) {
                     if (used[ny][nx]) continue;
-                    dfs_head(ny, nx);
+                    dfs_head(dinfo, ny, nx);
                     if (dinfo.found) break;
                 }
             }
@@ -429,7 +427,7 @@ namespace PathMutation {
             used[y][x] = false;
         }
 
-        void dfs_tail(int y, int x) {
+        void dfs_tail(DFSInfo& dinfo, int y, int x) {
             assert(!used[y][x]);
             used[y][x] = true;
             dinfo.new_segment.emplace_back(y, x);
@@ -464,7 +462,7 @@ namespace PathMutation {
                     int ny = y + dy[dir] * k, nx = x + dx[dir] * k;
                     if (input.arrows[ny][nx] == -1) break;
                     if (used[ny][nx]) continue;
-                    dfs_tail(ny, nx);
+                    dfs_tail(dinfo, ny, nx);
                     if (dinfo.found) break;
                 }
             }
@@ -472,7 +470,7 @@ namespace PathMutation {
             used[y][x] = false;
         }
 
-        void dfs(int y, int x) {
+        void dfs(DFSInfo& dinfo, int y, int x) {
             assert(!used[y][x]);
 
             if (y == dinfo.ty && x == dinfo.tx) { // arrived
@@ -515,7 +513,7 @@ namespace PathMutation {
                 int ny = y + dy[dir] * k, nx = x + dx[dir] * k;
                 if (input.arrows[ny][nx] == -1) break;
                 if (used[ny][nx]) continue;
-                dfs(ny, nx);
+                dfs(dinfo, ny, nx);
                 if (dinfo.found) break;
             }
 
@@ -524,18 +522,14 @@ namespace PathMutation {
         }
 
         // [begin, end) を破壊して繋ぎ直す
-        void check_mutate(int begin, int end) {
+        DFSInfo check_mutate(int begin, int end) {
             assert(begin >= 1); // 中間の破壊のみ考慮
             assert(begin <= end);
             assert(end <= (int)move_seq.size());
 
+            DFSInfo dinfo;
             dinfo.begin = begin;
             dinfo.end = end;
-            dinfo.old_segment.clear();
-            dinfo.new_segment.clear();
-            dinfo.found_segment.clear();
-            dinfo.found = false;
-            dinfo.new_score = 0;
 
             for (int i = begin; i < end; i++) {
                 const auto& [y, x] = move_seq[i];
@@ -551,7 +545,7 @@ namespace PathMutation {
                 assert(used[sy][sx]);
                 for (const auto& [y, x] : input.adj_backward[sy][sx]) {
                     if (used[y][x]) continue;
-                    dfs_head(y, x);
+                    dfs_head(dinfo, y, x);
                     if (dinfo.found) break;
                 }
                 assert(dinfo.new_segment.empty());
@@ -565,7 +559,7 @@ namespace PathMutation {
                     int y = sy + dy[dir] * k, x = sx + dx[dir] * k;
                     if (input.arrows[y][x] == -1) break;
                     if (used[y][x]) continue;
-                    dfs_tail(y, x);
+                    dfs_tail(dinfo, y, x);
                     if (dinfo.found) break;
                 }
                 assert(dinfo.new_segment.empty());
@@ -582,7 +576,7 @@ namespace PathMutation {
                     int y = sy + dy[dir] * k, x = sx + dx[dir] * k;
                     if (input.arrows[y][x] == -1) break;
                     if (used[y][x]) continue;
-                    dfs(y, x);
+                    dfs(dinfo, y, x);
                     if (dinfo.found) break;
                 }
                 assert(dinfo.new_segment.empty());
@@ -596,9 +590,11 @@ namespace PathMutation {
                 assert(!used[y][x]);
                 used[y][x] = true;
             }
+
+            return dinfo;
         }
 
-        void accept_mutate() {
+        void accept_mutate(const DFSInfo& dinfo) {
             for (int i = dinfo.begin; i < dinfo.end; i++) {
                 const auto& [y, x] = move_seq[i];
                 assert(used[y][x]);
@@ -624,9 +620,9 @@ namespace PathMutation {
                 for (int end = begin; end <= (int)move_seq.size(); end++) {
                     if (timer.elapsed_ms() > 9500) return false;
                     if (end - begin > max_length) continue;
-                    check_mutate(begin, end);
+                    auto dinfo = check_mutate(begin, end);
                     if (dinfo.found) {
-                        accept_mutate();
+                        accept_mutate(dinfo);
                         return true;
                     }
                 }
@@ -639,9 +635,9 @@ namespace PathMutation {
                 for (int end = begin; end < (int)move_seq.size(); end++) {
                     if (timer.elapsed_ms() > 9500) return false;
                     if (end - begin > max_length) continue;
-                    check_mutate(begin, end);
+                    auto dinfo = check_mutate(begin, end);
                     if (dinfo.found) {
-                        accept_mutate();
+                        accept_mutate(dinfo);
                         return true;
                     }
                 }
@@ -654,9 +650,9 @@ namespace PathMutation {
             int length = rnd.next_u32(max_length + 1);
             int end = std::min((int)move_seq.size(), begin + length);
             assert(end - begin <= max_length);
-            check_mutate(begin, end);
+            auto dinfo = check_mutate(begin, end);
             if (dinfo.found) {
-                accept_mutate();
+                accept_mutate(dinfo);
             }
             return true;
         }
@@ -702,6 +698,67 @@ namespace PathMutation {
 
 }
 
+namespace PathMutation2 {
+
+    using ::operator<<;
+
+    struct Cell {
+
+        int id = 0;
+        int py = -1;
+        int px = -1;
+        int ny = -1;
+        int nx = -1;
+        
+        std::string stringify() const {
+            return format("Cell [id=%d, prv=(%d, %d), nxt=(%d, %d)]", id, py, px, ny, nx);
+        }
+
+        void set(int id_ = 0, int py_ = -1, int px_ = -1, int ny_ = -1, int nx_ = -1) {
+            id = id_; py = py_; px = px_; ny = ny_; nx = nx_;
+        }
+    };
+
+    struct State {
+
+        const Input input;
+
+        std::vector<std::pair<int, int>> move_seq;
+        int score = 0;
+
+        std::array<std::array<Cell, NMAX>, NMAX> board{};
+
+        State(const Input& input_, const std::vector<std::pair<int, int>>& move_seq_)
+            : input(input_), move_seq(move_seq_)
+        {
+            move_seq.insert(move_seq.begin(), std::make_pair(-1, -1));
+            for (int id = 1; id < (int)move_seq.size(); id++) {
+                auto [y, x] = move_seq[id];
+                int py = -1, px = -1, ny = -1, nx = -1;
+                if (id != 1) {
+                    std::tie(py, px) = move_seq[id - 1];
+                }
+                if (id != (int)move_seq.size() - 1) {
+                    std::tie(ny, nx) = move_seq[id + 1];
+                }
+                board[y][x].set(id, py, px, ny, nx);
+            }
+            {
+                auto [y, x] = move_seq[1];
+                while (true) {
+                    const auto& c = board[y][x];
+                    score += c.id * input.mults[y][x];
+                    y = c.ny; x = c.nx;
+                    if (y == -1) break;
+                }
+                dump(score);
+            }
+        }
+    };
+
+}
+
+
 int main(int argc, char** argv) {
 
     Timer timer;
@@ -711,7 +768,7 @@ int main(int argc, char** argv) {
 #endif
 
     const bool LOCAL_MODE = argc > 1 && std::string(argv[1]) == "local";
-    const int seed = 2;
+    const int seed = 8;
 
     const auto input = [&]() {
         if (LOCAL_MODE) {
